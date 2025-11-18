@@ -1,0 +1,2 @@
+fastapi[standard]>=0.104.1
+python-jose[cryptography]>=3.3.0
