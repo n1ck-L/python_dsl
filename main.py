@@ -1,4 +1,6 @@
 from fastapi import FastAPI, Depends, HTTPException, status
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import Response, JSONResponse
 from datetime import datetime
 import uvicorn
 from models import User, UserResponse, Token
@@ -6,6 +8,8 @@ from auth import get_current_user, create_access_token, verify_password
 from datetime import timedelta
 
 app = FastAPI()
+
+app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.post("/login", response_model=Token)
 async def login(user_data: User):
@@ -33,20 +37,9 @@ async def read_users_me(current_user: dict = Depends(get_current_user)):
     }
 
 @app.get("/")
-async def root():
-    """Корневой endpoint с информацией о API"""
-    return {
-        "message": "Auth API Service",
-        "endpoints": {
-            "login": "POST /login - авторизация пользователя",
-            "me": "GET /me - информация о текущем пользователе",
-            "docs": "GET /docs - интерактивная документация API"
-        },
-        "test_users": [
-            {"username": "admin", "password": "admin123", "role": "administrator"},
-            {"username": "user", "password": "user123", "role": "user"}
-        ]
-    }
+async def serve_frontend():
+    with open("frontend/index.html", "r", encoding="utf-8") as f:
+        return Response(content=f.read(), media_type="text/html")
 
 @app.get("/health")
 async def health_check():
@@ -59,7 +52,7 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8443,
-        ssl_keyfile="resources/server.key",
-        ssl_certfile="resources/server.crt",
+        ssl_keyfile="server.key",
+        ssl_certfile="server.crt",
         reload=True
     )

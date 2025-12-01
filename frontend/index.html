@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Система авторизации</h1>
+        
+        <!-- Форма логина -->
+        <div class="auth-form" id="login-form">
+            <h2>Вход в систему</h2>
+            <div class="input-group">
+                <label for="username">Логин:</label>
+                <input type="text" id="username" placeholder="admin или user">
+            </div>
+            <div class="input-group">
+                <label for="password">Пароль:</label>
+                <input type="password" id="password" placeholder="admin123 или user123">
+            </div>
+            <button onclick="login()">Войти</button>
+            <p id="login-error" class="error"></p>
+        </div>
+
+        <!-- Информация о пользователе (скрыта до входа) -->
+        <div class="user-info" id="user-info" style="display: none;">
+            <h2>Профиль пользователя</h2>
+            <p><strong>Имя пользователя:</strong> <span id="user-username"></span></p>
+            <p><strong>Роль:</strong> <span id="user-role"></span></p>
+            <p><strong>Полное имя:</strong> <span id="user-fullname"></span></p>
+            <button onclick="logout()">Выйти</button>
+        </div>
+
+        <!-- Состояние системы -->
+        <div class="status">
+            <h3>Статус системы:</h3>
+            <p id="system-status">Проверка...</p>
+        </div>
+    </div>
+
+    <script src="/static/script.js"></script>
+</body>
+</html>
