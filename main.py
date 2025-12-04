@@ -9,6 +9,7 @@ from datetime import timedelta
 
 app = FastAPI()
 
+# Создаем URL-префикс, по которому будут доступны файлы
 app.mount("/static", StaticFiles(directory="frontend"), name="static")
 
 @app.post("/login", response_model=Token)
@@ -52,7 +53,7 @@ if __name__ == "__main__":
         "main:app",
         host="0.0.0.0",
         port=8443,
-        ssl_keyfile="server.key",
-        ssl_certfile="server.crt",
+        ssl_keyfile="resources/server.key",
+        ssl_certfile="resources/server.crt",
         reload=True
     )
