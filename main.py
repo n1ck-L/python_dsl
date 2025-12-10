@@ -1,11 +1,10 @@
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import Response
+from fastapi.responses import Response, JSONResponse
 from datetime import datetime
 import uvicorn
-from models import User, UserResponse, Token, UserListItem, UserListResponse, USERS
+from models import User, UserResponse, Token
 from auth import get_current_user, create_access_token, verify_password
-
 from datetime import timedelta
 
 app = FastAPI()
@@ -47,37 +46,6 @@ async def serve_frontend():
 async def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
-
-
-@app.get("/users", response_model=UserListResponse)
-async def get_all_users():
-    """Получение списка всех зарегистрированных пользователей"""
-    try:
-        # Преобразуем хардкодированных пользователей в нужный формат
-        users_list = []
-        
-        for username, user_data in USERS.items():
-            user_item = UserListItem(
-                username=user_data["username"],
-                full_name=user_data["full_name"],
-                role=user_data["role"]
-            )
-            users_list.append(user_item)
-        
-        # Формируем ответ
-        response = UserListResponse(
-            users=users_list,
-            total=len(users_list),
-            timestamp=datetime.utcnow().isoformat()
-        )
-        
-        return response
-        
-    except Exception as e:
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Ошибка при получении списка пользователей: {str(e)}"
-        )
 
 
 if __name__ == "__main__":
