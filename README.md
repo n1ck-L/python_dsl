@@ -4,7 +4,7 @@
 
 
 Два хардкодных пользователя:
-admin / admin123 → роль administrator
+admin / admin123 → роль administrator <br>
 user  / user123  → роль user
 
 Выдача JWT-токена сроком действия 30 минут
