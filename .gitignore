@@ -14,3 +14,7 @@ __pycache__/
 *.key
 *.csr
 *.pem
+
+# IMG
+*.png
+*.jpg
