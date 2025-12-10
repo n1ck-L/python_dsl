@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 class User(BaseModel):
     username: str
@@ -12,6 +13,18 @@ class UserResponse(BaseModel):
 class Token(BaseModel):
     access_token: str
     token_type: str
+
+class UserListItem(BaseModel):
+    """Модель для элемента списка пользователей"""
+    username: str
+    full_name: str
+    role: str
+
+class UserListResponse(BaseModel):
+    """Модель ответа со списком пользователей"""
+    users: List[UserListItem]
+    total: int
+    timestamp: str
 
 # Хардкод пользователей
 USERS = {
