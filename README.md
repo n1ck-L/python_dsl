@@ -37,7 +37,7 @@ git clone https://github.com/n1ck-L/python_dsl.git
 
 #### 3. Создать и активировать виртуальное окружение:
 ```bash
-Bashpython -m venv venv
+python -m venv venv
 source venv/bin/activate          # Linux/macOS
 # или
 venv\Scripts\activate             # Windows
