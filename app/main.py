@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
-from routers import auth_api
+from routers import auth_api, admin_api
 from datetime import datetime
 import uvicorn
 
@@ -11,7 +11,7 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/frontend"), name="static")
 
 app.include_router(auth_api.router)
-
+app.include_router(admin_api.router)
 
 
 @app.get("/")

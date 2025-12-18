@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление пользователя</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Добавление нового пользователя</h1>
+
+        <div class="user-info">
+            <form id="add-user-form">
+                <div class="input-group">
+                    <label for="username">Логин *</label>
+                    <input type="text" id="username" required placeholder="Введите уникальный логин">
+                </div>
+
+                <div class="input-group">
+                    <label for="full_name">Полное имя *</label>
+                    <input type="text" id="full_name" required placeholder="Иванов Иван Иванович">
+                </div>
+
+                <div class="input-group">
+                    <label for="password">Пароль *</label>
+                    <input type="password" id="password" required placeholder="Минимум 8 символов">
+                </div>
+
+                <div class="input-group">
+                    <label for="role">Роль *</label>
+                    <select id="role" required>
+                        <option value="">Выберите роль</option>
+                        <option value="user">Обычный пользователь</option>
+                        <option value="administrator">Администратор</option>
+                    </select>
+                </div>
+
+                <div class="error" id="error-message"></div>
+
+                <div class="buttons">
+                    <button type="submit">Добавить пользователя</button>
+                    <button type="button" onclick="window.location.href='/static/admin-users.html'">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подключаем отдельный скрипт для этой страницы -->
+    <script src="/static/script-add-user.js"></script>
+</body>
+</html>

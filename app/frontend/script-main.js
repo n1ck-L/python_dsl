@@ -72,6 +72,10 @@ async function loadUserInfo() {
         // Показываем блок с информацией
         document.getElementById('login-form').style.display = 'none';
         document.getElementById('user-info').style.display = 'block';
+
+        if (user.role == "administrator") {
+            document.getElementById('admin-panel').style.display = 'block';
+        }
         
     } catch (error) {
         console.error('Error loading user info:', error);
@@ -85,6 +89,7 @@ function logout() {
     localStorage.removeItem('auth_token');
     document.getElementById('login-form').style.display = 'block';
     document.getElementById('user-info').style.display = 'none';
+    document.getElementById('admin-panel').style.display = 'none';
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
     document.getElementById('login-error').textContent = '';

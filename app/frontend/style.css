@@ -19,7 +19,7 @@ body {
     box-shadow: 0 20px 60px rgba(0,0,0,0.3);
     padding: 40px;
     width: 100%;
-    max-width: 500px;
+    max-width: 35vw;
 }
 
 h1 {
@@ -101,7 +101,6 @@ button:active {
     padding: 20px;
     border-radius: 10px;
     margin-top: 20px;
-    border-left: 4px solid #667eea;
 }
 
 .user-info p {
@@ -109,7 +108,11 @@ button:active {
     color: #555;
 }
 
-.status {
+#admin-panel{
+    margin-top: 20px;
+}
+
+.status-bar {
     margin-top: 30px;
     padding-top: 20px;
     border-top: 1px solid #eee;
@@ -118,4 +121,44 @@ button:active {
 #system-status {
     color: #2ecc71;
     font-weight: 500;
+}
+
+/* Admin's panel Users */
+.users-list{
+    margin-right: 15px;
+    max-height: 50vh;            
+    overflow-y: auto;            /* вертикальный скролл */
+    overflow-x: hidden;          /* горизонтальный не нужен */
+    white-space: nowrap;
+}
+
+.user-list-items{
+    margin-left: 15px;
+    padding: 15px;
+}
+
+/* Adding/Deleting new user */
+.input-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #444;
+}
+
+input, select {
+    width: 100%;
+    padding: 14px 16px;
+    border: 2px solid #ddd;
+    border-radius: 10px;
+    font-size: 16px;
+    transition: border-color 0.3s;
+}
+
+input:focus, select:focus {
+    outline: none;
+    border-color: #667eea;
 }
