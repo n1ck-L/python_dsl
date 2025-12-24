@@ -22,6 +22,12 @@
             </div>
             <button onclick="login()">Войти</button>
             <p id="login-error" class="error"></p>
+
+            <!-- Состояние системы -->
+            <div class="status-bar">
+                <h3>Статус системы:</h3>
+                <p id="system-status">Проверка...</p>
+            </div>
         </div>
 
         <!-- Информация о пользователе (скрыта до входа) -->
@@ -33,13 +39,18 @@
             <button onclick="logout()">Выйти</button>
         </div>
 
-        <!-- Состояние системы -->
-        <div class="status">
-            <h3>Статус системы:</h3>
-            <p id="system-status">Проверка...</p>
+        <div class="user-info" id="admin-panel" style="display: none;">
+                <h2>Панель управления</h2>
+                <p><strong>Управление системой:</strong></p>
+                <button onclick="window.location.href='/static/admin-rooms.html'">
+                    Управление комнатами
+                </button>
+                <button onclick="window.location.href='/static/admin-users.html'">
+                    Управление пользователями
+                </button>
         </div>
     </div>
 
-    <script src="/static/script.js"></script>
+    <script src="/static/script-main.js"></script>
 </body>
 </html>

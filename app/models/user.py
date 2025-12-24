@@ -1,12 +1,17 @@
 from pydantic import BaseModel
-from typing import List
 
-class User(BaseModel):
+class UserLogin(BaseModel):
     username: str
     password: str
 
 class UserResponse(BaseModel):
     username: str
+    role: str
+    full_name: str
+
+class UserInDB(BaseModel):
+    username: str
+    password: str
     role: str
     full_name: str
 
@@ -22,22 +27,6 @@ class UserListItem(BaseModel):
 
 class UserListResponse(BaseModel):
     """Модель ответа со списком пользователей"""
-    users: List[UserListItem]
+    users: list[UserListItem]
     total: int
     timestamp: str
-
-# Хардкод пользователей
-USERS = {
-    "admin": {
-        "username": "admin",
-        "password": "admin123",
-        "role": "administrator",
-        "full_name": "Администратор Системы"
-    },
-    "user": {
-        "username": "user",
-        "password": "user123",
-        "role": "user",
-        "full_name": "Обычный Пользователь"
-    }
-}
