@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Добавление комнаты</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Добавление новой комнаты</h1>
+
+        <div class="user-info">
+            <form id="add-room-form">
+                <div class="input-group">
+                    <label for="name">Название комнаты *</label>
+                    <input type="text" id="name" required placeholder="Например: Переговорная комната">
+                </div>
+
+                <div class="input-group">
+                    <label for="description">Описание</label>
+                    <input type="text" id="description" placeholder="Опционально: Комната для долгих переговоров">
+                </div>
+
+                <div class="input-group">
+                    <label for="tags">Теги (через запятую)</label>
+                    <input type="text" id="tags" placeholder="wifi, balcony, view, smoking">
+                </div>
+
+                <div class="error" id="error-message"></div>
+
+                <div class="buttons">
+                    <button type="submit">Добавить комнату</button>
+                    <button type="button" onclick="window.location.href='/static/index.html'">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подключаем отдельный скрипт для этой страницы -->
+    <script src="/static/script-add-room.js"></script>
+</body>
+</html>

@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
+<<<<<<< Updated upstream
 from routers import auth_api, admin_api
 from datetime import datetime
+=======
+from datetime import datetime
+from routers import auth_api, users_api, rooms_api
+>>>>>>> Stashed changes
 import uvicorn
 
 app = FastAPI()
@@ -11,7 +16,12 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="app/frontend"), name="static")
 
 app.include_router(auth_api.router)
+<<<<<<< Updated upstream
 app.include_router(admin_api.router)
+=======
+app.include_router(users_api.router)
+app.include_router(rooms_api.router)
+>>>>>>> Stashed changes
 
 
 @app.get("/")
@@ -22,7 +32,11 @@ async def serve_frontend():
 @app.get("/health")
 async def health_check():
     """Health check endpoint"""
+<<<<<<< Updated upstream
     return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+=======
+    return {"status": "healthy", "timestamp": datetime.now().isoformat()}
+>>>>>>> Stashed changes
 
 
 if __name__ == "__main__":

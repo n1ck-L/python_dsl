@@ -1,0 +1,60 @@
+from fastapi import APIRouter, Depends, HTTPException, status
+from typing import List
+
+from models.room import RoomInDB, RoomBase, BookingRequest
+from repositories.room_repository import IRoomRepository
+from dependencies import get_room_repo, get_current_user, get_admin_user
+from models.user import UserInDB
+
+router = APIRouter(prefix="/rooms", tags=["rooms"])
+
+@router.get("/", response_model=List[RoomInDB])
+async def get_all_rooms(repo: IRoomRepository = Depends(get_room_repo)):
+    """Список всех объектов бронирования"""
+    return repo.get_all()
+
+
+@router.post("/book")
+async def book_room(
+    request: BookingRequest,
+    repo: IRoomRepository = Depends(get_room_repo),
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """Бронирование объекта (требует аутентификации)"""
+    success = repo.book_room(request.room_id, current_user.username)
+    if not success:
+        raise HTTPException(status_code=400, detail="Объект уже забронирован или не существует")
+    
+
+@router.post("/unbook")
+async def unbook_room(
+    request: BookingRequest,
+    repo: IRoomRepository = Depends(get_room_repo),
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """Бронирование объекта (требует аутентификации)"""
+    success = repo.unbook_room(request.room_id, current_user.username, current_user.role)
+    if not success:
+        raise HTTPException(status_code=400, detail="Объект уже освобожден или не существует")
+    
+
+@router.post("/add-room")
+async def add_room(
+    room_data: RoomBase,
+    repo: IRoomRepository = Depends(get_room_repo),
+    admin: UserInDB = Depends(get_admin_user)
+):
+    """Добавление новой комнаты - только для админа"""
+    repo.add_room(room_data)
+
+@router.delete("/del-room")
+async def delete_room(
+    room_id: int,
+    repo: IRoomRepository = Depends(get_room_repo),
+    admin: UserInDB = Depends(get_admin_user)
+):
+    """Удаление комнаты по ID - только для админа"""
+    success = repo.delete_room(room_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Комната не найдена")
+    return {"detail": "Комната успешно удалена"}

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Удаление комнаты</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Удаление комнаты</h1>
+
+        <div class="user-info">
+            <form id="del-room-form">
+                <div class="input-group">
+                    <label for="room_id">ID комнаты *</label>
+                    <input type="number" id="room_id" required min="1" placeholder="Введите ID комнаты">
+                </div>
+
+                <div class="error" id="error-message"></div>
+
+                <div class="buttons">
+                    <button type="submit">Удалить комнату</button>
+                    <button type="button" onclick="window.location.href='/static/index.html'">
+                        Отмена
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Подключаем отдельный скрипт для этой страницы -->
+    <script src="/static/script-del-room.js"></script>
+</body>
+</html>

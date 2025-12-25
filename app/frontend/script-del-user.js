@@ -7,7 +7,7 @@ async function delUser() {
         return;
     }
 
-    const response = await fetch('/users', {
+    const response = await fetch('/users/', {
         headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -26,7 +26,7 @@ async function delUser() {
 
         const username = document.getElementById('username').value.trim();
 
-        const response = await fetch(`/users/${username}`, {
+        const response = await fetch(`/users/del-user?username=${username}`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ async function delUser() {
 
         if (response.ok) {
             alert('Пользователь успешно удален!');
-            window.location.href = '/static/admin-users.html';
+            window.location.href = '/static/index.html';
         }
         else {
             const data = await response.json();
