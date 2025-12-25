@@ -7,7 +7,7 @@ async function addUser() {
         return;
     }
 
-    const response = await fetch('/users', {
+    const response = await fetch('/users/', {
         headers: { 'Authorization': `Bearer ${token}` }
     });
 
@@ -34,7 +34,7 @@ async function addUser() {
             return;
         }
 
-        const response = await fetch('/users', {
+        const response = await fetch('/users/add-user', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ async function addUser() {
 
         if (response.ok) {
             alert('Пользователь успешно добавлен!');
-            window.location.href = '/static/admin-users.html';
+            window.location.href = '/static/index.html';
         }
         else {
             const data = await response.json();

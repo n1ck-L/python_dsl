@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Auth System</title>
+    <title>Система бронирования комнат</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Форма логина -->
+
+        <!-- Форма входа -->
         <div class="auth-form" id="login-form">
-            <h1>Система авторизации</h1>
+            <h1>Система бронирования</h1>
             <h2>Вход в систему</h2>
             <div class="input-group">
                 <label for="username">Логин:</label>
@@ -22,32 +23,95 @@
             </div>
             <button onclick="login()">Войти</button>
             <p id="login-error" class="error"></p>
-
-            <!-- Состояние системы -->
-            <div class="status-bar">
-                <h3>Статус системы:</h3>
-                <p id="system-status">Проверка...</p>
+        </div>
+        
+        <!-- Основной интерфейс пользователя после входа -->
+        <div id="main-interface" style="display: none;">
+            <h1>Система бронирования комнат</h1>
+            <!-- Вкладки в стиле ежедневника -->
+            <div class="notebook-tabs">
+                <button class="tab-button active" id="admin-panel-tab" onclick="openTab('admin')" style="display: none;">
+                    <span>Панель администратора</span>
+                </button>
+                <button class="tab-button active" onclick="openTab('rooms')">
+                    <span>Бронирование комнат</span>
+                </button>
+                <button class="tab-button" onclick="openTab('profile')">
+                    <span>Профиль</span>
+                </button>
             </div>
-        </div>
 
-        <!-- Информация о пользователе (скрыта до входа) -->
-        <div class="user-info" id="user-info" style="display: none;">
-            <h2>Профиль пользователя</h2>
-            <p><strong>Имя пользователя:</strong> <span id="user-username"></span></p>
-            <p><strong>Роль:</strong> <span id="user-role"></span></p>
-            <p><strong>Полное имя:</strong> <span id="user-fullname"></span></p>
-            <button onclick="logout()">Выйти</button>
-        </div>
+            <!-- Вкладка: Бронирование комнат (по умолчанию) -->
+            <div id="rooms-tab" class="tab-content">
+                <div class="search-section">
+                    <h2>Доступные комнаты</h2>
+                    <div class="input-group inline">
+                        <input type="text" id="search-query" placeholder="Поиск по тегам: wifi and balcony or (view and not smoking)">
+                        <button onclick="searchRooms()">Найти</button>
+                        <button onclick="loadRooms()">Все комнаты</button>
+                    </div>
+                </div>
 
-        <div class="user-info" id="admin-panel" style="display: none;">
-                <h2>Панель управления</h2>
-                <p><strong>Управление системой:</strong></p>
-                <button onclick="window.location.href='/static/admin-rooms.html'">
-                    Управление комнатами
-                </button>
-                <button onclick="window.location.href='/static/admin-users.html'">
-                    Управление пользователями
-                </button>
+                <!-- Таблица комнат -->
+                <div class="rooms-table-wrapper">
+                    <table id="rooms-table" class="rooms-table">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Название</th>
+                                <th>Описание</th>
+                                <th>Теги</th>
+                                <th>Статус</th>
+                                <th>Действие</th>
+                            </tr>
+                        </thead>
+                        <tbody id="rooms-list">
+                            <!-- Заполняется JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Вкладка: Профиль -->
+            <div id="profile-tab" class="tab-content">
+                <h2>Информация о пользователе</h2>
+                <div class="user-info">
+                    <p><strong>Логин:</strong> <span id="user-username"></span></p>
+                    <p><strong>Полное имя:</strong> <span id="user-fullname"></span></p>
+                    <p><strong>Роль:</strong> <span id="user-role"></span></p>
+                    <button onclick="logout()" class="logout-btn">Выйти из системы</button>
+                </div>
+            </div>
+
+            <!-- Админ-панель -->
+            <div id="admin-tab" class="tab-content">
+                <div id="admin-panel">
+
+                    <div>
+                        <h3>Управление пользователями</h3>
+
+                        <div class="users-list user-info " id="users-list"></div>
+
+                        <div class="user-info">
+                            <button onclick="window.location.href='/static/admin-add-user.html'">Добавить пользователя</button>
+                            <button onclick="window.location.href='/static/admin-del-user.html'">Удалить пользователя</button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <h3>Управление комнатами</h3>
+
+                        <div class="users-list user-info " id="room-list-admin"></div>
+
+                        <div class="user-info">
+                            <button onclick="window.location.href='/static/admin-add-room.html'">Добавить комнату</button>
+                            <button onclick="window.location.href='/static/admin-del-room.html'">Удалить комнату</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
         </div>
     </div>
 

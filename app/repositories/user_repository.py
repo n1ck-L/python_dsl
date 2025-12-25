@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from typing import Optional, List
 from models.user import UserInDB
 
-class AbstractUserRepository(ABC):
+class IUserRepository(ABC):
     @abstractmethod
     def get_by_username(self, username: str) -> Optional[UserInDB]:
         pass
@@ -20,8 +20,7 @@ class AbstractUserRepository(ABC):
         pass
 
 
-
-class InMemoryUserRepository(AbstractUserRepository):
+class InMemoryUserRepository(IUserRepository):
     _db = {
         "admin": UserInDB(
             username="admin",
