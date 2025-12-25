@@ -24,26 +24,22 @@ async function login() {
         return;
     }
 
-    try {
-        const response = await fetch('/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-        });
+    const response = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+    });
 
-        if (!response.ok) {
-            const err = await response.json();
-            throw new Error(err.detail || 'Неверные данные');
-        }
-
-        const data = await response.json();
-        token = data.access_token;
-        localStorage.setItem('auth_token', token);
-
-        await loadUserInfoAndShowInterface();
-    } catch (error) {
-        errorElement.textContent = 'Ошибка: ' + error.message;
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || 'Неверные данные');
     }
+
+    const data = await response.json();
+    token = data.access_token;
+    localStorage.setItem('auth_token', token);
+
+    await loadUserInfoAndShowInterface();
 }
 
 // Загрузка данных и показ интерфейса
@@ -56,26 +52,6 @@ async function loadUserInfoAndShowInterface() {
 
     const user = await response.json();
 
-<<<<<<< Updated upstream:frontend/script.js
-        const user = await response.json();
-        
-        // Заполняем информацию о пользователе
-        document.getElementById('user-username').textContent = user.username;
-        document.getElementById('user-role').textContent = user.role;
-        document.getElementById('user-fullname').textContent = user.full_name;
-        
-        // Показываем блок с информацией
-        document.getElementById('login-form').style.display = 'none';
-        document.getElementById('user-info').style.display = 'block';
-
-        if (user.role == "administrator") {
-            document.getElementById('admin-panel').style.display = 'block';
-        }
-        
-    } catch (error) {
-        console.error('Error loading user info:', error);
-        logout();
-=======
     document.getElementById('user-username').textContent = user.username;
     document.getElementById('user-fullname').textContent = user.full_name;
     document.getElementById('user-role').textContent = user.role;
@@ -91,7 +67,6 @@ async function loadUserInfoAndShowInterface() {
         openTab('admin');
         loadUsers()
         loadRoomsAdmin()
->>>>>>> Stashed changes:app/frontend/script-main.js
     }
     else{
         openTab('rooms');
@@ -190,16 +165,8 @@ function logout() {
     token = null;
     localStorage.removeItem('auth_token');
     document.getElementById('login-form').style.display = 'block';
-<<<<<<< Updated upstream:frontend/script.js
-    document.getElementById('user-info').style.display = 'none';
-    document.getElementById('admin-panel').style.display = 'none';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-    document.getElementById('login-error').textContent = '';
-=======
     document.getElementById('main-interface').style.display = 'none';
     document.getElementById('admin-panel-tab').style.display = 'none';
->>>>>>> Stashed changes:app/frontend/script-main.js
 }
 
 // Получение списка пользователей
