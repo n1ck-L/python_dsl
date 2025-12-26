@@ -32,6 +32,7 @@ textproject/
 #### 1. Склонировать или скачать репозиторий
 ```bash
 git clone https://github.com/n1ck-L/python_dsl.git
+cd python_dsl
 ```
 #### 2. Убедиться, что установлен Python ≥ 3.9
 
@@ -52,8 +53,8 @@ python -m pip install -r requirements.txt
 #### 5. Создать папку для сертификатов и сгенерировать самоподписанный сертификат:
 
 ```Bash
-mkdir resources
-cd resources
+mkdir app/resources
+cd app/resources
 ```
 
 #### 6. Генерация самоподписанного сертификата:
@@ -83,7 +84,7 @@ openssl x509 -in server.crt -text -noout | grep -E "Subject:|Issuer:|DNS:|IP Add
 #### 7. Запустить приложение:
 
 ```Bash
-cd ..
+cd ../..
 python main.py
 ```
 
@@ -95,7 +96,8 @@ python main.py
 
 ### Где искать нужный код при дальнейшем развитии
 
-- Изменить/добавить/удалить пользователей — models.py словарь USERS
-- Изменить время жизни токена — auth.py константа ACCESS_TOKEN_EXPIRE_MINUTES
-- Добавить новые endpoint — main.py
-- Доработать фронтенд — frontend/script.js - основная логика, frontend/style.css - стили, frontend/indes.html - описание страницы
+- Изменить/добавить/удалить пользователей — app/repositories/user_repository.py
+- Изменить/добавить/удалить комнаты - app/repositories/room_reposotory.py
+- Изменить время жизни токена — app/services/auth_service.py константа ACCESS_TOKEN_EXPIRE_MINUTES
+- Добавить новые endpoint — директория app/routets/
+- Доработать фронтенд — frontend/script-main.js - основная логика, frontend/style.css - стили, frontend/indes.html - описание страницы
