@@ -78,6 +78,7 @@ async function loadUserInfoAndShowInterface() {
 // Загрузка комнат в таблицу
 async function loadRooms() {
     const tbody = document.getElementById('rooms-list');
+    document.getElementById('search-query').value = '';
 
     const response = await fetch('/rooms/', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -222,6 +223,53 @@ async function loadRoomsAdmin() {
             ? `Забронирована (${room.booked_by || 'неизвестно'})` 
             : 'Свободна'}
             </li>`;
+    });
+}
+
+// Поиск комнат по тегам
+async function searchRooms() {
+    const tbody = document.getElementById('rooms-list');
+    const query_str = document.getElementById('search-query').value;
+
+    const response = await fetch('/rooms/search', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ request: query_str })
+    });
+
+    if (!response.ok) throw new Error('Ошибка загрузки');
+
+    const rooms = await response.json();
+
+    if (rooms.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6">Нет доступных комнат</td></tr>';
+        return;
+    }
+
+    tbody.innerHTML = '';
+    rooms.forEach(room => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${room.id}</td>
+            <td><strong>${room.name}</strong></td>
+            <td>${room.description || '-'}</td>
+            <td>${room.tags.length ? room.tags.join(', ') : '-'}</td>
+            <td class="${room.booked ? 'status-booked' : 'status-free'}">
+                ${room.booked ? `Забронирована (${room.booked_by || '—'})` : 'Свободна'}
+            </td>
+            <td>
+                ${!room.booked 
+                    ? `<button onclick="bookRoom(${room.id})">Забронировать</button>`
+                    : ((currentUserrole === "administrator" || room.booked_by === currentUsername)
+                        ? `<button onclick="unbookRoom(${room.id})">Освободить</button>`
+                        : '')
+                }
+            </td>
+        `;
+        tbody.appendChild(row);
     });
 }
 
