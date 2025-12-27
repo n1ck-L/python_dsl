@@ -49,7 +49,6 @@ async function addUser() {
         });
 
         if (response.ok) {
-            alert('Пользователь успешно добавлен!');
             window.location.href = '/static/index.html';
         }
         else {

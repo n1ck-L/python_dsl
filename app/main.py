@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import Response
-from datetime import datetime
 from routers import auth_api, users_api, rooms_api
 import uvicorn
 

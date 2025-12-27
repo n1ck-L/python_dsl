@@ -56,7 +56,6 @@ async function addRoom() {
         });
 
         if (response.ok) {
-            alert('Комната успешно добавлена!');
             window.location.href = '/static/index.html';
         } else {
             const data = await response.json();

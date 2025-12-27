@@ -26,6 +26,10 @@ async function delUser() {
 
         const username = document.getElementById('username').value.trim();
 
+        if (!confirm(`Вы уверены, что хотите удалить пользователя ${username}?\nЭто действие необратимо!`)) {
+            return;
+        }
+
         const response = await fetch(`/users/del-user?username=${username}`, {
             method: 'DELETE',
             headers: {
@@ -35,7 +39,6 @@ async function delUser() {
         });
 
         if (response.ok) {
-            alert('Пользователь успешно удален!');
             window.location.href = '/static/index.html';
         }
         else {
