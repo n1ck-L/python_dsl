@@ -31,10 +31,6 @@ async function delRoom() {
 
         const room_id = document.getElementById('room_id').value.trim();
 
-        if (!confirm(`Вы уверены, что хотите удалить комнату с ID ${room_id}?\nЭто действие необратимо!`)) {
-            return;
-        }
-
         const response = await fetch(`/rooms/del-room?room_id=${room_id}`, {
             method: 'DELETE',
             headers: {

@@ -6,6 +6,7 @@ from models.user import UserResponse
 
 SECRET_KEY = "d7c7a7eaf565eaee31291b478320e4a2d9126405aa0d6074657e5ce5c8f0fccd"
 ALGORITHM = "HS256"
+ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 class AuthService:
     def __init__(self, repo: IUserRepository):
@@ -21,7 +22,7 @@ class AuthService:
             full_name=user.full_name
         )
 
-    def create_token(self, username: str, expires_minutes: int = 30) -> str:
-        expire = datetime.now() + timedelta(minutes=expires_minutes)
+    def create_token(self, username: str) -> str:
+        expire = datetime.now() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
         to_encode = {"sub": username, "exp": expire}
         return jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
