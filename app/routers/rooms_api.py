@@ -1,7 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from typing import List
+from boolia import evaluate
 
-from models.room import RoomInDB, RoomBase, BookingRequest
+from models.room import RoomInDB, RoomBase, BookingRequest, SearchRequest
 from repositories.room_repository import IRoomRepository
 from dependencies import get_room_repo, get_current_user, get_admin_user
 from models.user import UserInDB
@@ -47,6 +48,7 @@ async def add_room(
     """Добавление новой комнаты - только для админа"""
     repo.add_room(room_data)
 
+
 @router.delete("/del-room")
 async def delete_room(
     room_id: int,
@@ -58,3 +60,18 @@ async def delete_room(
     if not success:
         raise HTTPException(status_code=404, detail="Комната не найдена")
     return {"detail": "Комната успешно удалена"}
+
+
+@router.post("/search", response_model=List[RoomInDB])
+async def boolia_search(
+    query: SearchRequest,
+    repo: IRoomRepository = Depends(get_room_repo),
+):
+    all_rooms = repo.get_all()
+    filtered_rooms = []
+    for room in all_rooms:
+        set_tags = set(room.tags)
+        res = evaluate(query.request, context={}, tags=set_tags, on_missing="none")
+        if res is not False:
+            filtered_rooms.append(room)
+    return filtered_rooms

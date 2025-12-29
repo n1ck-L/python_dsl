@@ -31,15 +31,6 @@ async function delRoom() {
 
         const room_id = document.getElementById('room_id').value.trim();
 
-        if (!room_id || room_id <= 0) {
-            errorEl.textContent = 'Введите корректный ID комнаты';
-            return;
-        }
-
-        if (!confirm(`Вы уверены, что хотите удалить комнату с ID ${room_id}?\nЭто действие необратимо!`)) {
-            return;
-        }
-
         const response = await fetch(`/rooms/del-room?room_id=${room_id}`, {
             method: 'DELETE',
             headers: {
@@ -48,7 +39,6 @@ async function delRoom() {
         });
 
         if (response.ok) {
-            alert('Комната успешно удалена!');
             window.location.href = '/static/index.html';
         } else {
             const data = await response.json();

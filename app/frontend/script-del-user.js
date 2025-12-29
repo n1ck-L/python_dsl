@@ -35,7 +35,6 @@ async function delUser() {
         });
 
         if (response.ok) {
-            alert('Пользователь успешно удален!');
             window.location.href = '/static/index.html';
         }
         else {

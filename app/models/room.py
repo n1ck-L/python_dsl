@@ -15,3 +15,6 @@ class RoomInDB(RoomBase):
 
 class BookingRequest(BaseModel):
     room_id: int
+
+class SearchRequest(BaseModel):
+    request: str

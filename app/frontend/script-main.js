@@ -75,9 +75,9 @@ async function loadUserInfoAndShowInterface() {
     loadRooms();
 }
 
-// Загрузка комнат в таблицу
+// Загрузка всех комнат в таблицу
 async function loadRooms() {
-    const tbody = document.getElementById('rooms-list');
+    document.getElementById('search-query').value = '';
 
     const response = await fetch('/rooms/', {
         headers: { 'Authorization': `Bearer ${token}` }
@@ -86,6 +86,55 @@ async function loadRooms() {
     if (!response.ok) throw new Error('Ошибка загрузки');
 
     const rooms = await response.json();
+
+    printRooms(rooms);
+}
+
+// Поиск комнат по тегам
+async function searchRooms() {
+    const rooms = await booliaSearch();
+    printRooms(rooms);
+}
+
+// Поиск комнат и бронирование
+async function searchAndBook() {
+    const rooms = await booliaSearch();
+    if (rooms.length !== 0) {
+        // Ищем первую незабронированную комнату
+        const firstBooked = rooms.find(room => room.booked === false);
+        
+        if (firstBooked !== undefined) {
+            bookRoom(firstBooked.id);
+        }
+        else {
+            loadRooms();
+        }
+    }
+}
+
+// Функция обращения к API /search
+async function booliaSearch() {
+    const query_str = document.getElementById('search-query').value;
+
+    const response = await fetch('/rooms/search', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ request: query_str })
+    });
+
+    if (!response.ok) throw new Error('Ошибка загрузки');
+
+    const rooms = await response.json();
+
+    return rooms;
+}
+
+// Выводит комнаты в виде таблицы
+function printRooms(rooms) {
+    const tbody = document.getElementById('rooms-list');
 
     if (rooms.length === 0) {
         tbody.innerHTML = '<tr><td colspan="6">Нет доступных комнат</td></tr>';
@@ -118,8 +167,6 @@ async function loadRooms() {
 
 // Бронирование
 async function bookRoom(roomId) {
-    if (!confirm(`Забронировать комнату ID ${roomId}?`)) return;
-
     const response = await fetch('/rooms/book', {
         method: 'POST',
         headers: {
@@ -133,15 +180,12 @@ async function bookRoom(roomId) {
         const err = await response.json();
         throw new Error(err.detail || 'Не удалось забронировать');
     }
-
-    alert('Комната успешно забронирована!');
     loadRooms();
+    loadRoomsAdmin();
 }
 
 // Освобождение комнаты
 async function unbookRoom(roomId) {
-    if (!confirm(`Освободить комнату ID ${roomId}?`)) return;
-
     const response = await fetch('/rooms/unbook', {
         method: 'POST',
         headers: {
@@ -156,8 +200,8 @@ async function unbookRoom(roomId) {
         throw new Error(err.detail || 'Не удалось освободить');
     }
 
-    alert('Комната успешно освобождена!');
     loadRooms();
+    loadRoomsAdmin();
 }
 
 // Выход
