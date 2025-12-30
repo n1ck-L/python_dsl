@@ -75,3 +75,36 @@ async def boolia_search(
         if res is not False:
             filtered_rooms.append(room)
     return filtered_rooms
+
+
+@router.post("/search-and-book")
+async def search_and_book(
+    query: SearchRequest,
+    repo: IRoomRepository = Depends(get_room_repo),
+    current_user: UserInDB = Depends(get_current_user)
+):
+    """
+    Атомарно ищет комнаты по тегам (как /search), находит первую свободную
+    и сразу бронирует её на текущего пользователя.
+    """
+    all_rooms = repo.get_all()
+
+    suitable_free_rooms = []
+    for room in all_rooms:
+        if room.booked:
+            continue  # пропускаем уже забронированные
+
+        set_tags = set(room.tags)
+        res = evaluate(query.request, context={}, tags=set_tags, on_missing="none")
+        if res is not False:
+            suitable_free_rooms.append(room)
+
+    if not suitable_free_rooms:
+        raise HTTPException(status_code=404, detail="Подходящих свободных комнат не найдено")
+
+    # Берём первую подходящую и пытаемся забронировать
+    room_to_book = suitable_free_rooms[0]
+
+    success = repo.book_room(room_to_book.id, current_user.username)
+    if not success:
+        raise HTTPException(status_code=400, detail="Комната стала недоступна в процессе бронирования")

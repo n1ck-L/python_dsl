@@ -92,28 +92,6 @@ async function loadRooms() {
 
 // Поиск комнат по тегам
 async function searchRooms() {
-    const rooms = await booliaSearch();
-    printRooms(rooms);
-}
-
-// Поиск комнат и бронирование
-async function searchAndBook() {
-    const rooms = await booliaSearch();
-    if (rooms.length !== 0) {
-        // Ищем первую незабронированную комнату
-        const firstBooked = rooms.find(room => room.booked === false);
-        
-        if (firstBooked !== undefined) {
-            bookRoom(firstBooked.id);
-        }
-        else {
-            loadRooms();
-        }
-    }
-}
-
-// Функция обращения к API /search
-async function booliaSearch() {
     const query_str = document.getElementById('search-query').value;
 
     const response = await fetch('/rooms/search', {
@@ -129,7 +107,32 @@ async function booliaSearch() {
 
     const rooms = await response.json();
 
-    return rooms;
+    printRooms(rooms);
+}
+
+// Поиск комнат и бронирование
+async function searchAndBook() {
+    const query_str = document.getElementById('search-query').value.trim();
+
+    if (!query_str) {
+        alert('Введите запрос для поиска');
+        return;
+    }
+
+    const response = await fetch('/rooms/search-and-book', {
+        method: 'POST',
+        headers: { 
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` 
+        },
+        body: JSON.stringify({ request: query_str })
+    });
+
+    if (!response.ok) {
+        const err = await response.json();
+        throw new Error(err.detail || 'Не удалось забронировать');
+    }
+    loadRooms();
 }
 
 // Выводит комнаты в виде таблицы
